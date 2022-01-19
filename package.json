@@ -1,0 +1,28 @@
+{
+  "name": "rentacar2",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.8.1",
+    "bootstrap-icons": "^1.7.2",
+    "formik": "^2.2.9",
+    "next": "12.0.7",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "swr": "^1.1.2",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "eslint": "7.32.0",
+    "eslint-config-next": "12.0.7",
+    "postcss": "^8.4.4",
+    "prisma": "^3.8.1",
+    "tailwindcss": "^2.2.19"
+  }
+}
