@@ -3,7 +3,7 @@ import useSWR from "swr";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-const tableMobil = () => {
+const TableMobil = () => {
   const { data, error } = useSWR("/api/mobil", fetcher);
   if (error) return <p>Ada masalah saat fetching data</p>;
   if (!data) return <p>Loading...</p>;
@@ -92,4 +92,4 @@ const tableMobil = () => {
     </>
   );
 };
-export default tableMobil;
+export default TableMobil;
