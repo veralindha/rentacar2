@@ -17,6 +17,7 @@ model Mobil {
   bagasi    Int
   harga     Int
   transmisi Boolean
+  foto      String?
 }
 
 model Pesanan {
@@ -28,4 +29,10 @@ model Pesanan {
   mulai     DateTime
   sampai    DateTime
   tambahan  Boolean
+}
+
+model Akun {
+  idAkun    Int       @id @default(autoincrement())
+  username  String
+  password  String
 }

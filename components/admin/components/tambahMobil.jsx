@@ -1,24 +1,51 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { supabase } from "../../../features/supabase-client";
 
 const initFormValues = {
-  image: "",
+  image: null,
   namaMobil: "",
   transmisi: "",
   harga: "",
   jumlahPenumpang: "",
 };
-const handleOnSubmit = (values, { setSubmitting }) => {
-  setTimeout(() => {
-    alert(JSON.stringify(values, null, 2));
-    setSubmitting(false);
-  }, 400);
-};
 
+const uploadFotoProfil = async (image) => {
+  try {
+    const fileExt = image.name.split(".").pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `${fileName}`;
+    let { error: uploadError } = await supabase.storage
+      .from("rentacar") //sesuaikan dengan nama bucket yang dibuat
+      .upload(filePath, image);
+    if (uploadError) {
+      throw uploadError;
+    } else {
+      return filePath;
+    }
+  } catch (error) {
+    alert(error.message);
+  }
+};
+const handleOnSubmit = async (values) => {
+  let url = "/api/tambah-mobil";
+  values.pathFoto = await uploadFotoProfil(values.image);
+
+  const respon = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(values),
+  });
+
+  let status = await respon.json();
+  console.log(status);
+  if (status != null) {
+    location.replace("/admin/tambahmobil");
+  }
+};
 const skemaValidasi = Yup.object({
   image: Yup.string().required("Upload Image !"),
   namaMobil: Yup.string().required("Nama mobil harus diisi"),
-  transmisi: Yup.string().required("Pilih jenis transmisi"),
+  transmisi: Yup.boolean().required("Pilih jenis transmisi"),
   harga: Yup.number().required("Harga harus diisi"),
   jumlahPenumpang: Yup.number().required("Jumlah penumpang harus diisi"),
 });
@@ -35,7 +62,7 @@ const forms = () => {
         onSubmit={handleOnSubmit}
         validationSchema={skemaValidasi}
       >
-        {({ isSubmitting }) => (
+        {({ values, isSubmitting, setFieldValue }) => (
           <Form>
             <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
               <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
@@ -45,8 +72,21 @@ const forms = () => {
                 <span className="text-gray-700 dark:text-gray-400">
                   Masukan Gambar :{" "}
                 </span>
-                <Field type="file" name="image" id="" />
-                <ErrorMessage name="image" component={PesanError} />
+                <input
+                  type="file"
+                  name="image"
+                  id=""
+                  accept="image/png, image/jpeg"
+                  onChange={(event) => {
+                    setFieldValue("image", event.currentTarget.files[0]);
+                  }}
+                />
+                {values.image ? (
+                  <img src={URL.createObjectURL(values.image)} width="100px" />
+                ) : (
+                  "Belum ada foto yang dipilih"
+                )}
+                {/* <ErrorMessage name="image" component={PesanError} /> */}
               </label>
               <label className="block text-sm">
                 <span className="text-gray-700 dark:text-gray-400">

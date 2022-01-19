@@ -1,3 +1,16 @@
+import { Formik, Form, Field } from "formik";
+import { supabase } from "../features/supabase-client";
+
+const init = { email: "", password: "" };
+const prosesLogin = async (values) => {
+  let { error } = await supabase.auth.signIn({
+    email: values.email,
+    password: values.password,
+  });
+
+  if (error) alert(error.message);
+  else location.replace("/admin");
+};
 const login = () => {
   return (
     <>
@@ -8,30 +21,39 @@ const login = () => {
               Login
             </h5>
             <div className="font-normal text-gray-700 dark:text-gray-400 grid place-items-center ">
-              <div>
-                <input
-                  type="email"
-                  placeholder=" Email"
-                  className="h-9 m-2 border border-warna1 rounded-md"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="password"
-                  placeholder=" Password"
-                  className="h-9 m-2 border border-warna1 rounded-md"
-                  required
-                />
-              </div>
-              <div className="">
-                <button
-                  className="bg-warna1 rounded-md w-36 p-1 text-sm text-warna4 mt-6"
-                  type="submit"
-                >
-                  MASUK
-                </button>
-              </div>
+              <Formik initialValues={init} onSubmit={prosesLogin}>
+                {({ isSubmitting }) => (
+                  <Form>
+                    <div>
+                      <Field
+                        name="email"
+                        type="email"
+                        placeholder=" Email"
+                        className="h-9 m-2 border border-warna1 rounded-md"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Field
+                        name="password"
+                        type="password"
+                        placeholder=" Password"
+                        className="h-9 m-2 border border-warna1 rounded-md"
+                        required
+                      />
+                    </div>
+                    <div className="">
+                      <button
+                        className="bg-warna1 rounded-md w-36 p-1 text-sm text-warna4 mt-6"
+                        type="submit"
+                        disabled={isSubmitting}
+                      >
+                        MASUK
+                      </button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
             </div>
           </div>
         </div>

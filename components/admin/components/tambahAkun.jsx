@@ -1,16 +1,24 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { supabase } from "../../../features/supabase-client";
 
 const initFormValues = {
-  username: "",
   email: "",
   password: "",
 };
-const handleOnSubmit = (values, { setSubmitting }) => {
-  setTimeout(() => {
-    alert(JSON.stringify(values, null, 2));
-    setSubmitting(false);
-  }, 400);
+const prosesRegistrasi = async (values) => {
+  const { error } = await supabase.auth.signUp({
+    email: values.email,
+    password: values.password,
+  });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert(`Periksa email ${values.email} untuk mengkonfirmasi 
+pendaftaran akun Anda`);
+    location.replace("/login");
+  }
 };
 
 const skemaValidasi = Yup.object({
@@ -27,7 +35,7 @@ const tambahAkun = () => {
     <>
       <Formik
         initialValues={initFormValues}
-        onSubmit={handleOnSubmit}
+        onSubmit={prosesRegistrasi}
         validationSchema={skemaValidasi}
       >
         {({ isSubmitting }) => (
@@ -40,17 +48,19 @@ const tambahAkun = () => {
                       Tambah Akun
                     </h5>
                     <div className="font-normal text-gray-700 dark:text-gray-400 grid place-items-center ">
-                      <div>
+                      {/* <div>
                         <Field
+                          name="username"
                           type="text"
                           placeholder=" Username"
                           className="h-9 m-2 border border-warna1 rounded-md"
                           required
                         />
                         <ErrorMessage name="username" component={PesanError} />
-                      </div>
+                      </div> */}
                       <div>
                         <Field
+                          name="email"
                           type="email"
                           placeholder=" Email"
                           className="h-9 m-2 border border-warna1 rounded-md"
@@ -60,17 +70,19 @@ const tambahAkun = () => {
                       </div>
                       <div>
                         <Field
+                          name="password"
                           type="password"
                           placeholder=" Password"
                           className="h-9 m-2 border border-warna1 rounded-md"
                           required
                         />
-                        <ErrorMessage name="nama" component={PesanError} />
+                        <ErrorMessage name="password" component={PesanError} />
                       </div>
                       <div className="">
                         <button
                           className="bg-warna1 rounded-md w-36 p-1 text-sm text-warna4 mt-6"
                           type="submit"
+                          disabled={isSubmitting}
                         >
                           + TAMBAH AKUN
                         </button>
