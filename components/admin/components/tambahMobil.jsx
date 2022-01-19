@@ -16,7 +16,7 @@ const handleOnSubmit = (values, { setSubmitting }) => {
 };
 
 const skemaValidasi = Yup.object({
-  image: Yup.string.required("Upload Image !"),
+  image: Yup.string().required("Upload Image !"),
   namaMobil: Yup.string().required("Nama mobil harus diisi"),
   transmisi: Yup.string().required("Pilih jenis transmisi"),
   harga: Yup.number().required("Harga harus diisi"),
