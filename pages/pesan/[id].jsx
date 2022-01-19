@@ -37,7 +37,7 @@ export async function getServerSideProps(context) {
 }
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
-const pesan = (props) => {
+const Pesan = (props) => {
   const { data, error } = useSWR(`/api/detail/${props.id}`, fetcher);
 
   if (error) return <p>Ada masalah saat fetching data kontak dengan ID {id}</p>;
@@ -226,4 +226,4 @@ const pesan = (props) => {
     </>
   );
 };
-export default pesan;
+export default Pesan;

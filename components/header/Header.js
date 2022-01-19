@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function Header() {
   return (
     <>
@@ -10,12 +11,11 @@ export default function Header() {
             <h1 className="font-Poppins font-bold tracking-wider text-xl">
               Hanya Dengan Menggunakan Jari
             </h1>
-            <a
-              href="/"
-              className="bg-warna2 px-4 rounded-full font-semibold text-warna4 font-DMSans py-2 inline-block mt-10"
-            >
-              Rental Sekarang
-            </a>
+            <Link href="/">
+              <a className="bg-warna2 px-4 rounded-full font-semibold text-warna4 font-DMSans py-2 inline-block mt-10">
+                Rental Sekarang
+              </a>
+            </Link>
           </div>
         </div>
       </div>

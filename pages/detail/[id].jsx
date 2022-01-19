@@ -9,7 +9,7 @@ export async function getServerSideProps(context) {
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-const detail = (props) => {
+const Detail = (props) => {
   const { data, error } = useSWR(`/api/detail/${props.id}`, fetcher);
 
   if (error) return <p>Ada masalah saat fetching data kontak dengan ID {id}</p>;
@@ -114,4 +114,4 @@ const detail = (props) => {
     </>
   );
 };
-export default detail;
+export default Detail;
