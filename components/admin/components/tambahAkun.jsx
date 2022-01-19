@@ -16,7 +16,7 @@ const handleOnSubmit = (values, { setSubmitting }) => {
 const skemaValidasi = Yup.object({
   username: Yup.string().required("Nama lengkap harus diisi"),
   email: Yup.string().email("Format email salah").required("Email harus diisi"),
-  password: Yup.password().required("Password harus diisi"),
+  password: Yup.string().required("Password harus diisi"),
 });
 // Custom component untuk pesan error
 const PesanError = (props) => (
