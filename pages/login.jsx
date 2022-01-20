@@ -1,17 +1,17 @@
 import { Formik, Form, Field } from "formik";
 import { supabase } from "../features/supabase-client";
 
-const init = { email: "", password: "" };
+const init = { username: "", password: "" };
 const prosesLogin = async (values) => {
   let { error } = await supabase.auth.signIn({
-    email: values.email,
+    email: values.username,
     password: values.password,
   });
 
   if (error) alert(error.message);
   else location.replace("/admin");
 };
-const login = () => {
+const Login = () => {
   return (
     <>
       <div className="container mx-auto ">
@@ -27,7 +27,7 @@ const login = () => {
                     <div>
                       <Field
                         name="email"
-                        type="email"
+                        type="username"
                         placeholder=" Email"
                         className="h-9 m-2 border border-warna1 rounded-md"
                         required
@@ -61,4 +61,4 @@ const login = () => {
     </>
   );
 };
-export default login;
+export default Login;

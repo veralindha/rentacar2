@@ -3,27 +3,29 @@ import * as Yup from "yup";
 import { supabase } from "../../../features/supabase-client";
 
 const initFormValues = {
-  email: "",
+  username: "",
+  // phone: 0,
   password: "",
 };
 const prosesRegistrasi = async (values) => {
   const { error } = await supabase.auth.signUp({
-    email: values.email,
+    email: values.username,
+    // phone: parseInt(values.phone),
     password: values.password,
   });
 
   if (error) {
     alert(error.message);
   } else {
-    alert(`Periksa email ${values.email} untuk mengkonfirmasi 
+    alert(`Periksa email ${values.username} untuk mengkonfirmasi 
 pendaftaran akun Anda`);
     location.replace("/login");
   }
 };
 
 const skemaValidasi = Yup.object({
-  username: Yup.string().required("Nama lengkap harus diisi"),
-  email: Yup.string().email("Format email salah").required("Email harus diisi"),
+  username: Yup.string().email("Format email salah").required("Email harus diisi"),
+  // phone: Yup.number().required("no hp harus diisi"),
   password: Yup.string().required("Password harus diisi"),
 });
 // Custom component untuk pesan error
@@ -60,14 +62,24 @@ const tambahAkun = () => {
                       </div> */}
                       <div>
                         <Field
-                          name="email"
-                          type="email"
+                          name="username"
+                          type="username"
                           placeholder=" Email"
                           className="h-9 m-2 border border-warna1 rounded-md"
                           required
                         />
                         <ErrorMessage name="email" component={PesanError} />
                       </div>
+                      {/* <div>
+                        <Field
+                          name="phone"
+                          type="number"
+                          placeholder=" NO Handphone"
+                          className="h-9 m-2 border border-warna1 rounded-md"
+                          required
+                        />
+                        <ErrorMessage name="phone" component={PesanError} />
+                      </div> */}
                       <div>
                         <Field
                           name="password"
