@@ -3,6 +3,21 @@ import useSWR from "swr";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
+const hapusKontak = async (idMobil, nama) => {
+  let setuju = confirm(`Hapus data mobil ${nama}?`);
+  if (setuju) {
+    const data = { id: idMobil };
+    const respon = await fetch("/api/hapus", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    let status = await respon.json();
+    if (status != null) {
+      location.reload();
+    }
+  }
+};
+
 const TableMobil = () => {
   const { data, error } = useSWR("/api/mobil", fetcher);
   if (error) return <p>Ada masalah saat fetching data</p>;
@@ -75,9 +90,25 @@ const TableMobil = () => {
                       <td className="px-4 py-3 text-sm">
                         <div className="flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
                           <div>
-                            <button className="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                              Edit
+                            <button
+                              className="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                hapusKontak(mobil.id, mobil.namaMobil);
+                              }}
+                            >
+                              Hapus
                             </button>
+                          </div>
+                          <div>
+                            <Link href={`/admin/editmobil/${mobil.id}`}>
+                            <button
+                              className="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                              
+                            >
+                              Update
+                            </button>
+                            </Link>
                           </div>
                         </div>
                       </td>

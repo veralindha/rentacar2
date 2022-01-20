@@ -8,11 +8,16 @@ const initFormValues = {
   harga: "",
   jumlahPenumpang: "",
 };
-const handleOnSubmit = (values, { setSubmitting }) => {
-  setTimeout(() => {
-    alert(JSON.stringify(values, null, 2));
-    setSubmitting(false);
-  }, 400);
+const updateKontak = async (data, nama) => {
+  const data = { id: idMobil };
+  const respon = await fetch("/api/hapus", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+  let status = await respon.json();
+  if (status != null) {
+    location.reload();
+  }
 };
 
 const skemaValidasi = Yup.object({
@@ -27,7 +32,7 @@ const PesanError = (props) => (
   <div className="form-text text-warna2">{props.children}</div>
 );
 
-const editMobil = () => {
+const editMobil = (props) => {
   return (
     <>
       <Formik
